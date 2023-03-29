@@ -51,9 +51,9 @@ def apply_sphere(img, w, h, array, coeff):
 
 
 def test_circle():
-    s = 9
-    h = 1
-    arr = generate_sphere(s, h, 100)
+    s = 4
+    h = 0.5
+    arr = generate_sphere(s, h, 80)
     cv2.imwrite("circle_test_100.jpg", arr)
 
 
@@ -68,7 +68,7 @@ def test_conversion():
     print(wid, hei)
 
     # Process Image
-    square_len = 10
+    square_len = 5
 
     new_image = np.zeros([wid, hei, col_channels])
     for w in range(0, wid-square_len):
@@ -90,10 +90,10 @@ def test_application():
     print(wid, hei)
 
     # Process Image
-    step = 20
-    s = 9
-    h = 1
-    height_coeff = 100
+    step = 10
+    s = 4
+    h = 0.5
+    height_coeff = 80
 
     circle_arr = generate_sphere(s, h, height_coeff)
     test_circle()
