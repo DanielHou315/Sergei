@@ -136,6 +136,8 @@ apply_circ_20.jpg
 *.jpeg
 *.png 
 *.heic
+*.stl 
+*.obj
 
 
 # MacOS
