@@ -2,38 +2,8 @@ import cv2
 import numpy as np
 import math
 
-def find_max_three(image, w, h, channels, i):
-    print("Processing Pixel ", w, h)
-    # Aggregate Image Colors
-    sum = []
-    for k in range(0, channels):
-        sum.append(0)
-        for tw in range(w, w+i):
-            for th in range(h, h+i):
-                sum[k] += image[tw][th][k]
-
-    # Process
-    max_channel = 0
-    max_colorval = 0
-    for k in range(0, channels):
-        if sum[k] > max_colorval:
-            max_channel = k
-            max_colorval = sum[k]
-    return max_channel
-
-
-def generate_sphere(s, h, height_coeff):
-    r = (s**2 - 4*h**2) / 8 / h
-    array = np.zeros([s,s])
-    center = [s/2, s/2]
-    for i in range(0, s):
-        for j in range(0,s):
-            d2 = (i - s/2)**2 + (j - s/2)**2
-            x = math.sqrt(r**2 - d2) - r + h
-            if x < 0:
-                x = 0
-            array[i][j] = x * height_coeff
-    return array
+from .average_filter import *
+from .pattern_generator import *
 
 
 def apply_sphere(img, w, h, array, coeff):
@@ -49,13 +19,11 @@ def apply_sphere(img, w, h, array, coeff):
                 and starty + j > 0 and starty + j < imghei:
                 img[startx+i][starty + j] += coeff * array[i][j]
 
-
 def test_circle():
     s = 4
     h = 0.5
     arr = generate_sphere(s, h, 80)
     cv2.imwrite("circle_test_100.jpg", arr)
-
 
 def test_conversion():
     img_path = input("Enter Image Path: ")
@@ -73,7 +41,7 @@ def test_conversion():
     new_image = np.zeros([wid, hei, col_channels])
     for w in range(0, wid-square_len):
         for h in range(0, hei-square_len):
-            new_image[w][h][find_max_three(image, w, h, col_channels, square_len)] = col_max
+            new_image[w][h][find_max_of_average(image, w, h, col_channels, square_len)] = col_max
 
     cv2.imwrite("proc_" + str(square_len) + ".jpg", new_image)
 
